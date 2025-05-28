@@ -1,5 +1,5 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js';
-import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from 'https://esm.sh/three';
+import { GLTFLoader } from 'https://esm.sh/three/examples/jsm/loaders/GLTFLoader.js';
 
 const canvas = document.getElementById('threeCanvas');
 const scene = new THREE.Scene();
@@ -15,10 +15,10 @@ let currentModel;
 
 function loadModelForGenre(genreKey) {
   const modelPaths = {
-    pop: 'models/model_1.glb',
-    sad: 'models/model_4.glb',
-    lofi: 'models/model_3.glb',
-    electronic: 'models/model_2.glb',
+    pop: 'model_1.glb',
+    sad: 'model_2.glb',
+    lofi: 'model_3.glb',
+    electronic: 'model_4.glb',
   };
 
   const modelPath = modelPaths[genreKey];
@@ -33,6 +33,24 @@ function loadModelForGenre(genreKey) {
     currentModel.scale.set(1, 1, 1);
     scene.add(currentModel);
   });
+  if (currentModel) {
+    scene.remove(currentModel);
+  }
+
+  currentModel = gltf.scene;
+
+  // Auto-center the model
+  const box = new THREE.Box3().setFromObject(currentModel);
+  const center = box.getCenter(new THREE.Vector3());
+  currentModel.position.sub(center); // Shift model to center
+
+  // Resize model to fit view
+  const size = box.getSize(new THREE.Vector3()).length();
+  const scaleFactor = 2 / size;
+  currentModel.scale.setScalar(scaleFactor);
+
+  scene.add(currentModel);
+});
 }
 
 function animate() {
@@ -45,5 +63,5 @@ animate();
 
 // Expose globally for script.js to call
 window.loadModelForGenre = loadModelForGenre;
-
 loadModelForGenre('pop');
+animate();
