@@ -3,10 +3,17 @@ import { GLTFLoader } from 'https://esm.sh/three/examples/jsm/loaders/GLTFLoader
 
 const canvas = document.getElementById('threeCanvas');
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+  50, // Slightly narrower FOV for better control
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
 const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.z = 2;
+renderer.setPixelRatio(window.devicePixelRatio);
+camera.position.z = 3.5;
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
 scene.add(ambientLight);
@@ -16,10 +23,10 @@ let currentModel;
 function loadModelForGenre(genreKey) {
   const modelPaths = {
     pop: 'model_1.glb',
-    sad: 'model_2.glb',
-    lofi: 'model_3.glb',
-    electronic: 'model_4.glb',
-    country: 'model_5.glb',
+    rock: 'model_2.glb',
+    country: 'model_3.glb',
+    jazz: 'model_4.glb',
+    electronic: 'model_5.glb',
     custom: 'model_6.glb',
   };
 
@@ -28,41 +35,56 @@ function loadModelForGenre(genreKey) {
 
   const loader = new GLTFLoader();
   loader.load(modelPath, (gltf) => {
-   
-  if (currentModel) {
-    scene.remove(currentModel);
-  }
+    if (currentModel) scene.remove(currentModel);
 
-  currentModel = gltf.scene;
+    currentModel = gltf.scene;
 
-  // Auto-center the model
-  const box = new THREE.Box3().setFromObject(currentModel);
-  const center = box.getCenter(new THREE.Vector3());
-  currentModel.position.sub(center); // Shift model to center
+    // Center and scale the model responsively
+    const box = new THREE.Box3().setFromObject(currentModel);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3()).length();
+    const scaleFactor = getResponsiveScaleFactor(size);
 
-  // Resize model to fit view
-  const size = box.getSize(new THREE.Vector3()).length();
-  const scaleFactor = 2 / size;
-  currentModel.scale.setScalar(scaleFactor);
+    currentModel.position.sub(center);
+    currentModel.scale.setScalar(scaleFactor);
 
-  scene.add(currentModel);
-});
+    scene.add(currentModel);
+  }, undefined, (err) => {
+    console.error(`❌ Failed to load ${modelPath}`, err);
+  });
 }
 
+// Dynamically scale based on model size and screen
+function getResponsiveScaleFactor(size) {
+  const base = Math.min(window.innerWidth, window.innerHeight);
+  const targetSize = base < 600 ? 1.2 : 1.8; // smaller on phones
+  return targetSize / size;
+}
+
+// Animate
 function animate() {
   requestAnimationFrame(animate);
   if (currentModel) currentModel.rotation.y += 0.005;
   renderer.render(scene, camera);
 }
-
 animate();
 
-// Expose globally for script.js to call
+// Resize handler for full responsiveness
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  // Re-scale model on resize
+  if (currentModel) {
+    const box = new THREE.Box3().setFromObject(currentModel);
+    const size = box.getSize(new THREE.Vector3()).length();
+    const scaleFactor = getResponsiveScaleFactor(size);
+    currentModel.scale.setScalar(scaleFactor);
+  }
+});
+
+// Global exposure
 window.loadModelForGenre = loadModelForGenre;
-loadModelForGenre('pop');
-loadModelForGenre('rock');
-loadModelForGenre('electronic');
-loadModelForGenre('country');
-loadModelForGenre('jazz');
 
-animate();
+// Don't load any model initially
