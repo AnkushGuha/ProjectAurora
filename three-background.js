@@ -58,5 +58,9 @@ animate();
 // Expose globally for script.js to call
 window.loadModelForGenre = loadModelForGenre;
 loadModelForGenre('pop');
+loadModelForGenre('rock');
+loadModelForGenre('electronic');
+loadModelForGenre('country');
+loadModelForGenre('jazz');
 
 animate();
