@@ -241,8 +241,12 @@ function onVolumeChange() {
 genreSelect.addEventListener('change', (e) => {
   const selected = e.target.value;
   currentGenre = selected;
+
   updateGenreInfo(selected);
   stopAudio();
+
+  // ✅ Load 3D model for selected genre
+  window.loadModelForGenre(selected);
 });
 
 // Play button click
