@@ -15,10 +15,10 @@ let currentModel;
 
 function loadModelForGenre(genreKey) {
   const modelPaths = {
-    pop: 'model_1.glb',
-    sad: 'model_2.glb',
-    lofi: 'model_3.glb',
-    electronic: 'model_4.glb',
+    pop: 'models/model_1.glb',
+    sad: 'models/model_4.glb',
+    lofi: 'models/model_3.glb',
+    electronic: 'models/model_2.glb',
   };
 
   const modelPath = modelPaths[genreKey];
