@@ -26,8 +26,8 @@ function loadModelForGenre(genreKey) {
     rock: 'model_2.glb',
     country: 'model_3.glb',
     jazz: 'model_4.glb',
-    electronic: 'model_1.glb',
-    custom: 'model_2.glb',
+    electronic: 'model_5.glb',
+    custom: 'model_6.glb',
   };
 
   const modelPath = modelPaths[genreKey];
