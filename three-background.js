@@ -45,3 +45,5 @@ animate();
 
 // Expose globally for script.js to call
 window.loadModelForGenre = loadModelForGenre;
+
+loadModelForGenre('pop');
