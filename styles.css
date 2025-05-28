@@ -718,3 +718,12 @@ select option {
         height: 55px;
     }
 }
+canvas#threeCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2; /* keeps canvas behind */
+  pointer-events: none; /* allow clicks to pass through */
+}
