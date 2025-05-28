@@ -718,21 +718,7 @@ select option {
         height: 55px;
     }
 }
-.footer-links {
-  text-align: center;
-  margin-top: 2rem;
-  padding: 1rem;
-  font-size: 0.9rem;
-  color: #888;
-}
-.footer-links a {
-  color: #4a90e2;
-  text-decoration: none;
-  margin: 0 0.5rem;
-}
-.footer-links a:hover {
-  text-decoration: underline;
-}
+
 canvas#threeCanvas {
   position: fixed;
   top: 0;
