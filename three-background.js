@@ -16,11 +16,11 @@ let currentModel;
 function loadModelForGenre(genreKey) {
   const modelPaths = {
     pop: 'model_1.glb',
-    rock: 'model_2.glb',
-    country: 'model_3.glb',
-    jazz: 'model_4.glb',
-    electronic: 'model_1.glb',
-    custom: 'model_2.glb', // model used for user-uploaded tracks
+    sad: 'model_2.glb',
+    lofi: 'model_3.glb',
+    electronic: 'model_4.glb',
+    country: 'model_5.glb',
+    custom: 'model_6.glb',
   };
 
   const modelPath = modelPaths[genreKey];
@@ -28,24 +28,25 @@ function loadModelForGenre(genreKey) {
 
   const loader = new GLTFLoader();
   loader.load(modelPath, (gltf) => {
-    if (currentModel) {
-      scene.remove(currentModel);
-    }
+   
+  if (currentModel) {
+    scene.remove(currentModel);
+  }
 
-    currentModel = gltf.scene;
+  currentModel = gltf.scene;
 
-    // Center the model
-    const box = new THREE.Box3().setFromObject(currentModel);
-    const center = box.getCenter(new THREE.Vector3());
-    currentModel.position.sub(center);
+  // Auto-center the model
+  const box = new THREE.Box3().setFromObject(currentModel);
+  const center = box.getCenter(new THREE.Vector3());
+  currentModel.position.sub(center); // Shift model to center
 
-    // Scale to fit view
-    const size = box.getSize(new THREE.Vector3()).length();
-    const scaleFactor = 2 / size;
-    currentModel.scale.setScalar(scaleFactor);
+  // Resize model to fit view
+  const size = box.getSize(new THREE.Vector3()).length();
+  const scaleFactor = 2 / size;
+  currentModel.scale.setScalar(scaleFactor);
 
-    scene.add(currentModel);
-  });
+  scene.add(currentModel);
+});
 }
 
 function animate() {
@@ -56,7 +57,12 @@ function animate() {
 
 animate();
 
-// Make model loading available to script.js
+// Expose globally for script.js to call
 window.loadModelForGenre = loadModelForGenre;
+loadModelForGenre('pop');
+loadModelForGenre('rock');
+loadModelForGenre('electronic');
+loadModelForGenre('country');
+loadModelForGenre('jazz');
 
-// ✅ No initial model is loaded — waits for user to select genre or play custom track
+animate();
