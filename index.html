@@ -6,8 +6,9 @@
   <title>Aurora AI Music Player</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-  <canvas id="threeCanvas"></canvas>
+   <canvas id="threeCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2;"></canvas>
   <div class="container">
     <header>
       <nav>
@@ -16,18 +17,20 @@
           <li><a href="#home">Home</a></li>
           <li><a href="#player">Player</a></li>
           <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#privacy">Privacy</a></li>
         </ul>
       </nav>
     </header>
 
     <main>
-      <section class="hero">
+      <section class="hero" id="home">
         <div class="ai-character" id="aiCharacter">🌅</div>
         <h1>Aurora AI Music Player</h1>
         <p>Your intelligent music companion</p>
       </section>
 
-      <section class="controls">
+      <section class="controls" id="player">
         <div class="genre-selection">
           <label for="genreSelect">Choose Your Vibe:</label>
           <select id="genreSelect">
@@ -43,15 +46,13 @@
         <button id="playButton" class="play-btn">Play Music</button>
       </section>
 
-      <!-- Music Upload Section -->
       <section class="upload-section" id="uploadSection" style="display: none;">
         <div class="upload-container">
           <h3>🎵 Upload Your Custom Music</h3>
           <p>
             Share your favorite tracks with Aurora AI!<br />
             <small>
-              (For genre tracks, upload and select "Custom Music" from the
-              dropdown. Predefined genres use the files in the
+              (For genre tracks, upload and select "Custom Music" from the dropdown. Predefined genres use the files in the
               <code>audio</code> folder.)
             </small>
           </p>
@@ -60,21 +61,11 @@
             <div class="upload-icon">📁</div>
             <p>Drag & Drop your music files here</p>
             <p class="upload-hint">or click to browse</p>
-            <input
-              type="file"
-              id="musicFileInput"
-              accept="audio/*"
-              multiple
-              style="display: none;"
-            />
+            <input type="file" id="musicFileInput" accept="audio/*" multiple style="display: none;" />
             <button id="browseBtn" class="browse-btn">Browse Files</button>
           </div>
 
-          <div
-            class="upload-progress"
-            id="uploadProgress"
-            style="display: none;"
-          >
+          <div class="upload-progress" id="uploadProgress" style="display: none;">
             <div class="progress-bar-upload">
               <div class="progress-fill-upload" id="progressFillUpload"></div>
             </div>
@@ -119,14 +110,7 @@
           </div>
           <div class="volume-container">
             <span>🔊</span>
-            <input
-              type="range"
-              id="volumeSlider"
-              min="0"
-              max="100"
-              value="50"
-              class="volume-slider"
-            />
+            <input type="range" id="volumeSlider" min="0" max="100" value="50" class="volume-slider" />
             <span id="volumeValue">50%</span>
           </div>
         </div>
@@ -138,9 +122,32 @@
       <audio id="countryMusic" src="audio/country.wav"></audio>
       <audio id="jazzMusic" src="audio/jazz.mp3"></audio>
       <audio id="electronicMusic" src="audio/electronic.mp3"></audio>
+
+      <!-- About Section -->
+      <section id="about" class="info-section">
+        <h2>About Aurora AI</h2>
+        <p>Aurora AI is your intelligent music companion designed to elevate your listening experience. Whether you're vibing to pop or relaxing with jazz, Aurora AI curates and enhances your music journey with smart features and beautiful visual feedback.</p>
+      </section>
+
+      <!-- Services Section -->
+      <section id="services" class="info-section">
+        <h2>Our Services</h2>
+        <ul>
+          <li>🎧 Intelligent music playback based on genre selection</li>
+          <li>📁 Custom music upload and management</li>
+          <li>📊 Real-time playback controls and volume tuning</li>
+          <li>🎨 Visually dynamic music experience with animations</li>
+        </ul>
+      </section>
+
+      <!-- Privacy Policy Section -->
+      <section id="privacy" class="info-section">
+        <h2>Privacy Policy</h2>
+        <p>Your privacy is important to us. Aurora AI does not collect or store any personal data or uploaded music. All files are processed locally in your browser and never leave your device.</p>
+      </section>
     </main>
   </div>
- <script src="script.js"></script>
   <script type="module" src="three-background.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
