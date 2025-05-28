@@ -4,7 +4,7 @@ import { GLTFLoader } from 'https://esm.sh/three/examples/jsm/loaders/GLTFLoader
 const canvas = document.getElementById('threeCanvas');
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
-  50, // Slightly narrower FOV for better control
+  50,
   window.innerWidth / window.innerHeight,
   0.1,
   1000
@@ -26,66 +26,73 @@ function loadModelForGenre(genreKey) {
     rock: 'model_2.glb',
     country: 'model_3.glb',
     jazz: 'model_4.glb',
-    electronic: 'model_5.glb',
-    custom: 'model_6.glb',
+    electronic: 'model_1.glb',
+    custom: 'model_2.glb',
   };
 
   const modelPath = modelPaths[genreKey];
-  if (!modelPath) return;
+  if (!modelPath) {
+    console.warn(`No model found for genre: ${genreKey}`);
+    return;
+  }
 
   const loader = new GLTFLoader();
   loader.load(modelPath, (gltf) => {
-    if (currentModel) scene.remove(currentModel);
+    // Remove and dispose of previous model
+    if (currentModel) {
+      scene.remove(currentModel);
+      currentModel.traverse(obj => {
+        if (obj.geometry) obj.geometry.dispose();
+        if (obj.material) {
+          if (Array.isArray(obj.material)) {
+            obj.material.forEach(m => m.dispose());
+          } else {
+            obj.material.dispose();
+          }
+        }
+      });
+    }
 
     currentModel = gltf.scene;
 
-    // Center and scale the model responsively
+    // Center and scale the model
     const box = new THREE.Box3().setFromObject(currentModel);
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3()).length();
-    const scaleFactor = getResponsiveScaleFactor(size);
+    const scaleFactor = Math.min(1.8, Math.max(1, 1.8 / size));
 
     currentModel.position.sub(center);
     currentModel.scale.setScalar(scaleFactor);
 
     scene.add(currentModel);
   }, undefined, (err) => {
-    console.error(`❌ Failed to load ${modelPath}`, err);
+    console.error(`Failed to load model for ${genreKey}`, err);
   });
 }
 
-// Dynamically scale based on model size and screen
-function getResponsiveScaleFactor(size) {
-  const base = Math.min(window.innerWidth, window.innerHeight);
-  const targetSize = base < 600 ? 1.2 : 1.8; // smaller on phones
-  return targetSize / size;
-}
-
-// Animate
 function animate() {
   requestAnimationFrame(animate);
   if (currentModel) currentModel.rotation.y += 0.005;
   renderer.render(scene, camera);
 }
+
 animate();
 
-// Resize handler for full responsiveness
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  // Re-scale model on resize
   if (currentModel) {
     const box = new THREE.Box3().setFromObject(currentModel);
     const size = box.getSize(new THREE.Vector3()).length();
-    const scaleFactor = getResponsiveScaleFactor(size);
+    const scaleFactor = Math.min(1.8, Math.max(1, 1.8 / size));
     currentModel.scale.setScalar(scaleFactor);
   }
 });
 
-// Global exposure
+// Make function callable from other scripts
 window.loadModelForGenre = loadModelForGenre;
-loadModelForGenre("pop"); // change this to whichever genre you want
 
-// Don't load any model initially
+// Optional: Uncomment if you want a model to load immediately
+// loadModelForGenre("pop");
