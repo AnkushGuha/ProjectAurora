@@ -86,5 +86,6 @@ window.addEventListener("resize", () => {
 
 // Global exposure
 window.loadModelForGenre = loadModelForGenre;
+loadModelForGenre("pop"); // change this to whichever genre you want
 
 // Don't load any model initially
