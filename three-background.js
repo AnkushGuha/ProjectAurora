@@ -26,13 +26,7 @@ function loadModelForGenre(genreKey) {
 
   const loader = new GLTFLoader();
   loader.load(modelPath, (gltf) => {
-    if (currentModel) {
-      scene.remove(currentModel);
-    }
-    currentModel = gltf.scene;
-    currentModel.scale.set(1, 1, 1);
-    scene.add(currentModel);
-  });
+   
   if (currentModel) {
     scene.remove(currentModel);
   }
