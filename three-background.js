@@ -23,10 +23,10 @@ let currentModel;
 function loadModelForGenre(genreKey) {
   const modelPaths = {
     pop: 'model_1.glb',
-    rock: 'model_2.glb',
+    rock: 'model_5.glb',
     country: 'model_3.glb',
     jazz: 'model_4.glb',
-    electronic: 'model_5.glb',
+    electronic: 'model_2.glb',
     custom: 'model_6.glb',
   };
 
