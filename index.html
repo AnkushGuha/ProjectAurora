@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aurora AI Music Player</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <nav>
+        <div class="logo">Aurora AI</div>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#player">Player</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="ai-character" id="aiCharacter">🌅</div>
+        <h1>Aurora AI Music Player</h1>
+        <p>Your intelligent music companion</p>
+      </section>
+
+      <section class="controls">
+        <div class="genre-selection">
+          <label for="genreSelect">Choose Your Vibe:</label>
+          <select id="genreSelect">
+            <option value="">Select Genre</option>
+            <option value="pop">Pop Vibes</option>
+            <option value="rock">Rock Anthem</option>
+            <option value="country">Country Roads</option>
+            <option value="jazz">Jazz Nights</option>
+            <option value="electronic">Electronic Pulse</option>
+            <option value="custom">Custom Music</option>
+          </select>
+        </div>
+        <button id="playButton" class="play-btn">Play Music</button>
+      </section>
+
+      <!-- Music Upload Section -->
+      <section class="upload-section" id="uploadSection" style="display: none;">
+        <div class="upload-container">
+          <h3>🎵 Upload Your Custom Music</h3>
+          <p>
+            Share your favorite tracks with Aurora AI!<br />
+            <small>
+              (For genre tracks, upload and select "Custom Music" from the
+              dropdown. Predefined genres use the files in the
+              <code>audio</code> folder.)
+            </small>
+          </p>
+
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📁</div>
+            <p>Drag & Drop your music files here</p>
+            <p class="upload-hint">or click to browse</p>
+            <input
+              type="file"
+              id="musicFileInput"
+              accept="audio/*"
+              multiple
+              style="display: none;"
+            />
+            <button id="browseBtn" class="browse-btn">Browse Files</button>
+          </div>
+
+          <div
+            class="upload-progress"
+            id="uploadProgress"
+            style="display: none;"
+          >
+            <div class="progress-bar-upload">
+              <div class="progress-fill-upload" id="progressFillUpload"></div>
+            </div>
+            <p id="uploadStatus">Uploading...</p>
+          </div>
+
+          <div class="uploaded-files" id="uploadedFiles" style="display:none;">
+            <h4>Your Custom Tracks:</h4>
+            <div class="files-list" id="filesList"></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="genre-description" id="genreDescription">
+        <p id="genreDescriptionText">Select a genre to see its description</p>
+      </div>
+
+      <section class="now-playing" id="nowPlaying">
+        <div class="playing-info">
+          <span>Now Playing: </span><span id="currentGenre">-</span>
+        </div>
+      </section>
+
+      <section class="music-player">
+        <div class="player-container">
+          <div class="album-art" id="albumArt">🌅</div>
+          <div class="track-info">
+            <div class="track-title" id="trackTitle">Select a genre to start</div>
+            <div class="track-artist" id="trackArtist">Aurora AI</div>
+          </div>
+          <div class="player-controls">
+            <button id="prevBtn" class="control-btn">⏮️</button>
+            <button id="playPauseBtn" class="control-btn play-pause">▶️</button>
+            <button id="nextBtn" class="control-btn">⏭️</button>
+          </div>
+          <div class="progress-container">
+            <span id="currentTime" class="time">0:00</span>
+            <div class="progress-bar" id="progressBar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span id="totalTime" class="time">0:00</span>
+          </div>
+          <div class="volume-container">
+            <span>🔊</span>
+            <input
+              type="range"
+              id="volumeSlider"
+              min="0"
+              max="100"
+              value="50"
+              class="volume-slider"
+            />
+            <span id="volumeValue">50%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Predefined genre audio elements -->
+      <audio id="popMusic" src="audio/pop.mp3"></audio>
+      <audio id="rockMusic" src="audio/rock.mp3"></audio>
+      <audio id="countryMusic" src="audio/country.wav"></audio>
+      <audio id="jazzMusic" src="audio/jazz.mp3"></audio>
+      <audio id="electronicMusic" src="audio/electronic.mp3"></audio>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
